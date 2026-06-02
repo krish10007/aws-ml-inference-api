@@ -1,0 +1,52 @@
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+
+# ── Jupyter (if you use notebooks for model exploration) ─
+.ipynb_checkpoints/
+
+# ── Terraform ────────────────────────────────────────────
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform.lock.hcl
+*.tfvars          # may contain sensitive values — never commit
+override.tf
+crash.log
+
+# ── AWS credentials ───────────────────────────────────────
+.aws/
+*.pem
+credentials
+
+# ── Lambda deployment artifacts ───────────────────────────
+lambda/package/
+lambda/*.zip
+
+# ── Model artifacts (large binary files) ─────────────────
+model/artifacts/
+*.tar.gz
+*.h5
+*.pb
+
+# ── OS noise ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── VS Code ───────────────────────────────────────────────
+.vscode/
+*.code-workspace
+
+# ── Environment variables ─────────────────────────────────
+.env
+.env.*
