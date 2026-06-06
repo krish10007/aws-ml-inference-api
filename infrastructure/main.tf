@@ -28,3 +28,21 @@ module "s3" {
   project_name = var.project_name
   environment  = var.environment
 }
+
+module "iam" {
+  source = "./modules/iam"
+
+  project_name               = var.project_name
+  environment                = var.environment
+  model_artifacts_bucket_arn = module.s3.bucket_arn
+}
+
+module "sagemaker" {
+  source = "./modules/sagemaker"
+
+  project_name                 = var.project_name
+  environment                  = var.environment
+  aws_region                   = var.aws_region
+  model_artifacts_bucket_name  = module.s3.bucket_name
+  sagemaker_execution_role_arn = module.iam.sagemaker_execution_role_arn
+}

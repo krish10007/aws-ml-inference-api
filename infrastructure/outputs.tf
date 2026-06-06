@@ -1,9 +1,15 @@
 output "model_artifacts_bucket_name" {
-  description = "S3 bucket for model artifacts"
-  value       = module.s3.bucket_name
+  value = module.s3.bucket_name
 }
 
 output "model_artifacts_bucket_arn" {
-  description = "ARN of model artifacts S3 bucket"
-  value       = module.s3.bucket_arn
+  value = module.s3.bucket_arn
+}
+
+output "sagemaker_endpoint_name" {
+  value = module.sagemaker.endpoint_name
+}
+
+output "sagemaker_endpoint_arn" {
+  value = module.sagemaker.endpoint_arn
 }
