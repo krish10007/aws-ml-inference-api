@@ -13,3 +13,7 @@ output "sagemaker_endpoint_name" {
 output "sagemaker_endpoint_arn" {
   value = module.sagemaker.endpoint_arn
 }
+
+output "lambda_function_name" {
+  value = module.lambda.function_name
+}

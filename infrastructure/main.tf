@@ -35,8 +35,17 @@ module "iam" {
   project_name               = var.project_name
   environment                = var.environment
   model_artifacts_bucket_arn = module.s3.bucket_arn
+  sagemaker_endpoint_arn     = module.sagemaker.endpoint_arn
 }
 
+module "lambda" {
+  source = "./modules/lambda"
+
+  project_name              = var.project_name
+  environment               = var.environment
+  sagemaker_endpoint_name   = module.sagemaker.endpoint_name
+  lambda_execution_role_arn = module.iam.lambda_execution_role_arn
+}
 module "sagemaker" {
   source = "./modules/sagemaker"
 
