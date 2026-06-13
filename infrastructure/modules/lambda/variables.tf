@@ -13,3 +13,7 @@ variable "sagemaker_endpoint_name" {
 variable "lambda_execution_role_arn" {
   type = string
 }
+
+variable "artifacts_bucket_name" {
+  type = string
+}

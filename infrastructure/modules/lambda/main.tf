@@ -1,16 +1,20 @@
-# ── Package the Lambda zip ───────────────────────────────────────────────────
-
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "${path.root}/../lambda/package"
   output_path = "${path.root}/../lambda/lambda.zip"
 }
 
-# ── Lambda function ──────────────────────────────────────────────────────────
+resource "aws_s3_object" "lambda_package" {
+  bucket = var.artifacts_bucket_name
+  key    = "lambda/lambda.zip"
+  source = data.archive_file.lambda_zip.output_path
+  etag   = data.archive_file.lambda_zip.output_md5
+}
 
 resource "aws_lambda_function" "inference" {
   function_name    = "${var.project_name}-inference"
-  filename         = data.archive_file.lambda_zip.output_path
+  s3_bucket        = aws_s3_object.lambda_package.bucket
+  s3_key           = aws_s3_object.lambda_package.key
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   handler          = "handler.lambda_handler"
   runtime          = "python3.11"
@@ -30,4 +34,6 @@ resource "aws_lambda_function" "inference" {
     Environment = var.environment
     ManagedBy   = "terraform"
   }
+
+  depends_on = [aws_s3_object.lambda_package]
 }

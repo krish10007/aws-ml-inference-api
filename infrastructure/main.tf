@@ -45,7 +45,9 @@ module "lambda" {
   environment               = var.environment
   sagemaker_endpoint_name   = module.sagemaker.endpoint_name
   lambda_execution_role_arn = module.iam.lambda_execution_role_arn
+  artifacts_bucket_name     = module.s3.bucket_name   # ADD THIS LINE
 }
+
 module "sagemaker" {
   source = "./modules/sagemaker"
 
