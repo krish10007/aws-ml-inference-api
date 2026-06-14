@@ -57,3 +57,12 @@ module "sagemaker" {
   model_artifacts_bucket_name  = module.s3.bucket_name
   sagemaker_execution_role_arn = module.iam.sagemaker_execution_role_arn
 }
+
+module "api_gateway" {
+  source = "./modules/api_gateway"
+
+  project_name          = var.project_name
+  environment           = var.environment
+  lambda_invoke_arn     = module.lambda.invoke_arn
+  lambda_function_name  = module.lambda.function_name
+}

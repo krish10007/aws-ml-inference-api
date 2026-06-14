@@ -17,3 +17,8 @@ output "sagemaker_endpoint_arn" {
 output "lambda_function_name" {
   value = module.lambda.function_name
 }
+
+output "api_classify_url" {
+  description = "Public URL for the classify endpoint"
+  value       = module.api_gateway.classify_url
+}
