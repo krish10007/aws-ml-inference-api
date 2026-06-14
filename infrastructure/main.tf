@@ -66,3 +66,21 @@ module "api_gateway" {
   lambda_invoke_arn     = module.lambda.invoke_arn
   lambda_function_name  = module.lambda.function_name
 }
+
+module "sns" {
+  source = "./modules/sns"
+
+  project_name = var.project_name
+  environment  = var.environment
+  alert_email  = var.alert_email
+}
+
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+
+  project_name            = var.project_name
+  environment             = var.environment
+  aws_region              = var.aws_region
+  sagemaker_endpoint_name = module.sagemaker.endpoint_name
+  sns_topic_arn           = module.sns.topic_arn
+}

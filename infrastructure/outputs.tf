@@ -22,3 +22,11 @@ output "api_classify_url" {
   description = "Public URL for the classify endpoint"
   value       = module.api_gateway.classify_url
 }
+
+output "sns_topic_arn" {
+  value = module.sns.topic_arn
+}
+
+output "cloudwatch_dashboard_url" {
+  value = module.cloudwatch.dashboard_url
+}
