@@ -197,4 +197,4 @@ def lambda_handler(event, context):
     return build_response(200, {
         "class":      class_name,
         "confidence": round(confidence, 4),
-    })
+    })# trigger ci
