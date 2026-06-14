@@ -1,0 +1,66 @@
+name: Deploy Lambda
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lambda/src/**'
+      - 'lambda/requirements.txt'
+      - '.github/workflows/deploy-lambda.yml'
+
+permissions:
+  id-token: write   # required for OIDC
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::148761647179:role/ml-inference-api-github-actions-role
+          aws-region: us-east-1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build Lambda package
+        run: |
+          rm -rf lambda/package
+          mkdir -p lambda/package
+          cp lambda/src/handler.py lambda/package/handler.py
+          pip install \
+            -r lambda/requirements.txt \
+            --target lambda/package \
+            --platform manylinux2014_x86_64 \
+            --python-version 3.11 \
+            --only-binary=:all: \
+            --upgrade
+
+      - name: Zip package
+        run: |
+          cd lambda/package
+          zip -r ../lambda.zip .
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp lambda/lambda.zip s3://ml-inference-api-model-artifacts-dev/lambda/lambda.zip
+
+      - name: Update Lambda function code
+        run: |
+          aws lambda update-function-code \
+            --function-name ml-inference-api-inference \
+            --s3-bucket ml-inference-api-model-artifacts-dev \
+            --s3-key lambda/lambda.zip
+
+      - name: Wait for update to complete
+        run: |
+          aws lambda wait function-updated \
+            --function-name ml-inference-api-inference

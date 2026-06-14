@@ -1,0 +1,1 @@
+alert_email = "krishjakhar60@gmail.com"

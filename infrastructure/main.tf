@@ -84,3 +84,12 @@ module "cloudwatch" {
   sagemaker_endpoint_name = module.sagemaker.endpoint_name
   sns_topic_arn           = module.sns.topic_arn
 }
+
+module "github_oidc" {
+  source = "./modules/github_oidc"
+
+  project_name         = var.project_name
+  github_repo          = "krish10007/aws-ml-inference-api"
+  lambda_function_arn  = module.lambda.function_arn
+  artifacts_bucket_arn = module.s3.bucket_arn
+}

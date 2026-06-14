@@ -30,3 +30,7 @@ output "sns_topic_arn" {
 output "cloudwatch_dashboard_url" {
   value = module.cloudwatch.dashboard_url
 }
+
+output "github_actions_role_arn" {
+  value = module.github_oidc.github_actions_role_arn
+}
