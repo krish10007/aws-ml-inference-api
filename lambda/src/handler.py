@@ -198,3 +198,4 @@ def lambda_handler(event, context):
         "class":      class_name,
         "confidence": round(confidence, 4),
     })# trigger ci
+# CI/CD pipeline verified
